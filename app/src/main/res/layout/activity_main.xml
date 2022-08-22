@@ -74,6 +74,35 @@
             android:text="Device Charging" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/overrideDeadlineTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Override Deadline : "
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"/>
+
+        <TextView
+            android:id="@+id/updateDeadlineTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Not Set"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"/>
+
+        </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"/>
+
     <Button
         android:id="@+id/schedule_button"
         android:layout_width="wrap_content"
