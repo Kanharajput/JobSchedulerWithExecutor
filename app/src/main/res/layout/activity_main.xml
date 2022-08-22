@@ -8,4 +8,60 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
+
+    <TextView
+        android:id="@+id/networkPreferencetxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select Network Preference"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium" />
+
+    <RadioGroup
+        android:id="@+id/networkOptionsRadioGrp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/noneRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="None"
+            android:checked="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        <RadioButton
+            android:id="@+id/anyRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Any"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        <RadioButton
+            android:id="@+id/wifiRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wi-Fi"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/schedule_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:onClick="scheduleJob"
+        android:text="Schedule Job" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="4dp"
+        android:onClick="cancelJob"
+        android:text="Cancel Job" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>

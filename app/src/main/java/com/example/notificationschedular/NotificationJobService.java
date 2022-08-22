@@ -10,6 +10,11 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+/*
+* To use JobScheduler, you need to use JobService and JobInfo:
+A JobInfo object contains the set of conditions that trigger a job to run.
+A JobService is the implementation of the job that runs under the conditions set in the JobInfo object. */
+
 public class NotificationJobService extends JobService {
 
     // handle the notification
