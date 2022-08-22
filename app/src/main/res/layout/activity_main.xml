@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -45,6 +44,35 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
     </RadioGroup>
+
+    <TextView
+        android:id="@+id/requiresLabelTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Requires"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium" />
+
+    
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <Switch
+            android:id="@+id/idleSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Device Idle"
+            android:layout_marginEnd="30dp"/>
+
+        <Switch
+            android:id="@+id/chargigSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Device Charging" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/schedule_button"

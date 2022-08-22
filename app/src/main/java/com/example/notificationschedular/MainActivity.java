@@ -10,12 +10,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private RadioGroup networkOptionsRadioGrp;                 // to get the network options selected by the user
     private JobScheduler jobScheduler;
+    private Switch deviceCharging;                       // object for chargingSwitch
+    private Switch deviceIdle;                              // object for IdleSwitch
     private static final int JOB_ID = 0;
 
     @Override
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
 
         // reference the network options
         networkOptionsRadioGrp = findViewById(R.id.networkOptionsRadioGrp);
+        // initialise the switches
+        deviceCharging = findViewById(R.id.chargigSwitch);
+        deviceIdle = findViewById(R.id.idleSwitch);
     }
 
     public void scheduleJob(View view) {
@@ -53,31 +59,49 @@ public class MainActivity extends AppCompatActivity {
 
         // get the job scheduler service from the system
         jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+
         // ComponentName is use to associate JobService and JobInfo
         ComponentName componentName = new ComponentName(getPackageName(),NotificationJobService.class.getName());
+
         // used to create the JobInfo
         JobInfo.Builder jobInfoBuilder = new JobInfo.Builder(JOB_ID,componentName);
-        // set the network preference choosen by user
-        jobInfoBuilder.setRequiredNetworkType(selected_network_option);
-        // this build the JobInfo
-        JobInfo jobInfo = jobInfoBuilder.build();
-        // this will pass it to JobService
-        jobScheduler.schedule(jobInfo);
 
-        Toast.makeText(this,
-                            "Job scheduled: job will run when the conditions are met",
-                                    Toast.LENGTH_SHORT).show();
+        /* Actually here we are only setting the requirements which are
+         given by the user to perform an operation  */
+        jobInfoBuilder.setRequiredNetworkType(selected_network_option);
+        // set the requirement of idle and charging state
+        // it accept boolean value, if passed parameter is true then it will
+        // run only that requirement is fulfilled otherwise neglect it.
+        jobInfoBuilder.setRequiresDeviceIdle(deviceIdle.isChecked());
+        jobInfoBuilder.setRequiresCharging(deviceCharging.isChecked());
+
+        // if no options is selected by the user then the operation
+        // should not be perform that's why we are checking that user enabled
+        // any of the switch or not if didn't then request him to enable any of the switch
+        if(deviceCharging.isChecked() || deviceIdle.isChecked()) {
+            // this build the JobInfo
+            JobInfo jobInfo = jobInfoBuilder.build();
+
+            // this will pass it to JobService
+            jobScheduler.schedule(jobInfo);
+
+            Toast.makeText(this,
+                    "Job scheduled: job will run when the conditions are met",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this,
+                    "Please choose when to perform operation either in idle state or in charging state",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     // onclick listener for cancel button
     public void cancelJob(View view) {
-
         if(jobScheduler != null) {
             jobScheduler.cancelAll();          // delete all the schedule jobs
             Toast.makeText(this,
                                 "Job cancellled",
                                         Toast.LENGTH_SHORT).show();
         }
-
     }
 }
