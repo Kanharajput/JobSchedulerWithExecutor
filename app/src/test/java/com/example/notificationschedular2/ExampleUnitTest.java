@@ -1,4 +1,4 @@
-package com.example.notificationschedular;
+package com.example.notificationschedular2;
 
 import org.junit.Test;
 

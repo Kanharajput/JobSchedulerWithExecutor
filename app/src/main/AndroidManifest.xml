@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.notificationschedular">
+    package="com.example.notificationschedular2">
 
     <application
         android:allowBackup="true"
@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotificationSchedular">
         <service
-            android:name=".NotificationJobService"
+            android:name=".ServiceProvider"
             android:permission="android.permission.BIND_JOB_SERVICE"
             />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.notificationschedular2.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

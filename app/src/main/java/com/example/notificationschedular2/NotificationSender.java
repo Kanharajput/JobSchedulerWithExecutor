@@ -1,41 +1,39 @@
-package com.example.notificationschedular;
+package com.example.notificationschedular2;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobParameters;
-import android.app.job.JobService;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-/*
-* To use JobScheduler, you need to use JobService and JobInfo:
-A JobInfo object contains the set of conditions that trigger a job to run.
-A JobService is the implementation of the job that runs under the conditions set in the JobInfo object. */
-
-public class NotificationJobService extends JobService {
-
-    // handle the notification
+public class NotificationSender {
     NotificationManager notificationManager;
     private final String PRIMARY_CHANNEL_ID = "primary_notification_channel";        // notification channel id
     private final int NOTIFICATION_ID = 0;
+    Context activityContext;
 
-    @Override
-    public boolean onStartJob(JobParameters params) {
+    // get the acitivity context
+    public NotificationSender(Context context) {
+        activityContext = context;
+    }
+
+    protected void sendNotification() {
         // create the notification channel
         createNotificationChannel();
 
         // Intent and Pending Intent to send with notification
-        Intent contentIntent = new Intent(this,MainActivity.class);
-        PendingIntent pendingContentIntent = PendingIntent.getActivity(this,
+        Intent contentIntent = new Intent(activityContext,MainActivity.class);
+        PendingIntent pendingContentIntent = PendingIntent.getActivity(activityContext,
                                                                                 NOTIFICATION_ID,
                                                                                 contentIntent,
                                                                                 PendingIntent.FLAG_IMMUTABLE);
 
         // build the notification
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,PRIMARY_CHANNEL_ID);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(activityContext,PRIMARY_CHANNEL_ID);
         notificationBuilder.setContentIntent(pendingContentIntent);
         notificationBuilder.setSmallIcon(R.drawable.ic_job_running);
         notificationBuilder.setDefaults(NotificationCompat.DEFAULT_ALL);
@@ -45,26 +43,22 @@ public class NotificationJobService extends JobService {
 
         // send the notification
         notificationManager.notify(NOTIFICATION_ID,notificationBuilder.build());
-
-        // return true means job offloaded to a new thread and if return is false then the job is done at the ui thread
-        return false;
     }
 
-    @Override
-    public boolean onStopJob(JobParameters params) {
-        // return true means reschedule the job if return is false then the job is dropped
-        return true;
-    }
 
     private void createNotificationChannel() {
         // get the notification manager from the system
-        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // inside the acitivity class we can directly access the getSystemService
+            // but here we need to activity context to do so.
+            notificationManager = (NotificationManager) activityContext.getSystemService(NOTIFICATION_SERVICE);
+        }
         // check android api level notification channel only works form api level 26 that is android 8 (oreo)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // create notificaiton channel
             NotificationChannel notificationChannel = new NotificationChannel(PRIMARY_CHANNEL_ID,
-                                                                        "job service notification",
-                                                                                NotificationManager.IMPORTANCE_HIGH);
+                    "job service notification",
+                    NotificationManager.IMPORTANCE_HIGH);
 
             notificationChannel.enableLights(true);
             notificationChannel.enableVibration(true);
@@ -73,3 +67,5 @@ public class NotificationJobService extends JobService {
         }
     }
 }
+
+

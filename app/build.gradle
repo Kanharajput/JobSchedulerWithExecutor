@@ -6,7 +6,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.notificationschedular"
+        applicationId "com.example.notificationschedular2"
         minSdk 21
         targetSdk 31
         versionCode 1

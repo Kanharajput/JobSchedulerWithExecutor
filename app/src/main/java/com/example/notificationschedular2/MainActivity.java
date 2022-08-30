@@ -1,12 +1,14 @@
-package com.example.notificationschedular;
+package com.example.notificationschedular2;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.job.JobInfo;
+import android.app.job.JobParameters;
 import android.app.job.JobScheduler;
+import android.app.job.JobService;
 import android.content.ComponentName;
-import android.os.Build;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.RadioGroup;
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private Switch deviceIdle;                              // object for IdleSwitch
     private SeekBar seekBar;
     private static final int JOB_ID = 0;
+    private static JobInfo jobInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
 
         // ComponentName is use to associate JobService and JobInfo
-        ComponentName componentName = new ComponentName(getPackageName(),NotificationJobService.class.getName());
+        ComponentName componentName = new ComponentName(getPackageName(), ServiceProvider.class.getName());
 
         // used to create the JobInfo
         JobInfo.Builder jobInfoBuilder = new JobInfo.Builder(JOB_ID,componentName);
@@ -117,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         // any of the switch or not if didn't then request him to enable any of the switch
         if(deviceCharging.isChecked() || deviceIdle.isChecked() || setSeekBar) {
             // this build the JobInfo
-            JobInfo jobInfo = jobInfoBuilder.build();
+            jobInfo = jobInfoBuilder.build();
 
             // this will pass it to JobService
             jobScheduler.schedule(jobInfo);
